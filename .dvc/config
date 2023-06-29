@@ -1,0 +1,2 @@
+['remote "model-track"']
+    url = gs://model_dataset_tracker_new/model

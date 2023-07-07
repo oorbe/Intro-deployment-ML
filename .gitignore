@@ -3,3 +3,4 @@ venve/
 *.json
 *.csv
 *.pkl
+/python.py

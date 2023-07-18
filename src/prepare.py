@@ -23,9 +23,9 @@ movie_data = pd.read_csv(StringIO(movie_data_path))
 fin_data = pd.read_csv(StringIO(financial_data_path)) 
 opening_data = pd.read_csv(StringIO(opening_data_path)) 
   
-# numeric_columns_mask = (movie_data.dtypes == float) | (movie_data.dtypes == int)
-# numeric_columns = [columns for columns in numeric_columns_mask.index if numeric_columns_mask[columns]]
-# movie_data = movie_data[numeric_columns + ['movie_title']]
+numeric_columns_mask = (movie_data.dtypes == float) | (movie_data.dtypes == int)
+numeric_columns = [columns for columns in numeric_columns_mask.index if numeric_columns_mask[columns]]
+movie_data = movie_data[numeric_columns + ['movie_title']]
 
 fin_data = fin_data[['movie_title', 'production_budget', 'worldwide_gross']]
 

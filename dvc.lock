@@ -1,9 +1,30 @@
 schema: '2.0'
 stages:
   prepare:
-    cmd: python src/prepare.py
+    cmd: python src/prepare.py dataset/movies.csv dataset/finantials.csv dataset/opening_gross.c
+    deps:
+    - path: dataset/finantials.csv
+      hash: md5
+      md5: 4a265d63db921dcca137b881e47eab6d
+      size: 593277
+    - path: dataset/movies.csv
+      hash: md5
+      md5: ef7f7a00938d3a84263d9be5bcfe55b2
+      size: 320474
+    - path: dataset/opening_gross.csv
+      hash: md5
+      md5: c80667fa6a25f50f44e2e3d8b351ff3f
+      size: 79949
+    - path: src/prepare.py
+      hash: md5
+      md5: 9325ab318041933f8d9e3472572d3136
+      size: 1721
     outs:
+    - path: dataset/data_wordwide_gross.csv
+      hash: md5
+      md5: 318321c8b2dc9d75eeb08b5c05590d89
+      size: 337676
     - path: dataset/full_data.csv
       hash: md5
-      md5: 933b7af1c6f2fb6bba99344e9d80e15c
-      size: 170182
+      md5: a3a53353ae95048fbef7a7d638430e64
+      size: 157791

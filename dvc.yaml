@@ -1,9 +1,11 @@
 stages:
   prepare:
-    cmd: python src/prepare.py
+    cmd: python src/prepare.py dataset/movies.csv dataset/finantials.csv dataset/opening_gross.c
+    deps:
+    - dataset/finantials.csv
+    - dataset/movies.csv
+    - dataset/opening_gross.csv
+    - src/prepare.py
     outs:
+    - dataset/data_wordwide_gross.csv
     - dataset/full_data.csv
-  training:
-    cmd: python src/train.py
-    outs:
-    - model/model.pkl

@@ -9,3 +9,12 @@ stages:
     outs:
     - dataset/data_wordwide_gross.csv
     - dataset/full_data.csv
+  training:
+    cmd: python src/train.py dataset/full_data.csv
+    deps:
+    - dataset/full_data.csv
+    - src/train.py
+    outs:
+    - model/model.pkl
+    - prediction_behaviour.png
+    - repot.txt

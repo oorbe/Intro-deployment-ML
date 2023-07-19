@@ -4,3 +4,7 @@ venve/
 *.csv
 *.pkl
 /python.py
+*.txt
+*.pmg
+__pycache__
+/prediction_behaviour.png

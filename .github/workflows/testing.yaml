@@ -13,7 +13,7 @@ jobs:
   # setearemos las variables de ambiente para podernos conecta a google, para google cloud storage, cloud registry y lo demas servicios de google que necesitemos  
     env:
   # aqui se ingresa le secret.
-      SERVICE_ACCOUNT_KEY: ${{ secretes.SERVICE_ACCOUNT_KEY }}
+      SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
   # los steps
   steps:
     - name: Checkout the repo

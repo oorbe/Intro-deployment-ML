@@ -13,6 +13,7 @@ def main():
         json_file.write(b64decode(key.decode()))
         # en testing.yaml está esperando una salida por esto hacemos:
     print(os.path.realpath('path.json'))
-    
+
+
 if __name__ == '__main__':
     main()

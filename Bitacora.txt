@@ -317,14 +317,17 @@ test.py .                                                                [100%]
 
 ============================== 1 passed in 1.83s ==============================
 
-
-# Ahora se va a empaquetar la api en una imagen de docker:
-
-
-
+# DOCKER :o 
+# Ahora se va a empaquetar la api en una imagen de docker. Lo cree y comenté.
+# Luego se crea el archivo inicializer.sh, que contiene #!/bin/bash que significa que usaremos bash
 
 
 
+10:46
+# Bash: utilizo el siguiente comando.
+ DOCKER_BUILDKIT=1 docker build . -t model-api:v1
 
+
+pytest==6.2.5
 
 

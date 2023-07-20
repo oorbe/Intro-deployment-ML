@@ -288,3 +288,43 @@ Type hints provide two benefits. First, they help people reading your code to kn
 
 
 Me funcionó la API, al correr
+
+2023-07-20
+
+El comand utilizado en bash:
+
+# Utilizamos nuesta API del modulo FastAPI utilizando uvicorn seleccionamos el archivo principal "main" de la carpeta api y intanciamos la carpeta "app".
+uvicorn api.main:app
+
+Termino de hacer algunas pruebitas manuales en la API y me funcionó, dos resultados son:
+
+15275072
+570483241
+
+# bash: para probar la api si está funcionando correctamente.
+pytest test.py
+
+#pasó con el siguiente mensaje:
+Oliver@LAPTOP-I2UGFLL2 MINGW64 ~/Documents/Intro-deployment-ML (testing_api)
+$ pytest test.py
+============================= test session starts =============================
+platform win32 -- Python 3.11.4, pytest-6.2.5, py-1.11.0, pluggy-1.2.0
+rootdir: C:\Users\Oliver\Documents\Intro-deployment-ML
+plugins: anyio-3.7.0, dvc-3.2.2, hydra-core-1.3.2
+collected 1 item
+
+test.py .                                                                [100%]
+
+============================== 1 passed in 1.83s ==============================
+
+
+# Ahora se va a empaquetar la api en una imagen de docker:
+
+
+
+
+
+
+
+
+

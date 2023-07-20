@@ -1,0 +1,290 @@
+Ruta:
+cd ~/Documents/ea/Platzi/ML/CursoDeIntroduccionAlDespliegueDeModelosDeMachineLearning/
+
+------------------------------------------------------------------------------------------------------------------
+									CONCEPTOS IMPORTANTES
+------------------------------------------------------------------------------------------------------------------
+SSH:
+ssh stands for “Secure Shell”. It is a protocol used to securely connect to a remote server/system. ssh is secure in the sense that it transfers the data in encrypted form between the host and the client. It transfers inputs from the client to the host and relays back the output. ssruns at TCP/IP port 22. 
+
+Los pasos para crear el SSH:
+https://www.linuxfordevices.com/tutorials/linux/connect-to-github-with-ssh
+
+https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
+# Creación:
+ssh-keygen -t ed25519 -C "<oorbe@Github>"
+
+# Agente:
+eval "$(ssh-agent -s)"
+
+# Se añade el agente:
+ssh-add ~/.ssh/id_ed25519
+
+# Uso del paquete para copiar, si no abre abralo en blog de notas ==> Recuende, es el de extención ".pub"
+
+sudo apt-get install xclip
+# If you are not on a Debian based distro, use package manager of your choice( eg. Pacman or yum) 
+ 
+xclip -selection clipboard < ~/.ssh/id_ed25519.pub
+------------------------------------------------------------------------------------------------------------------
+									PYTHON-Bash
+------------------------------------------------------------------------------------------------------------------
+Para usar Python en la consola-bash escribí la palabra "python" y me dirigió a una descarga desde la ventana de descargas de windows.
+Luego puedo usar comandos relacionado con python.
+
+------------------------------------------------------------------------------------------------------------------
+									VIRTUALENV
+------------------------------------------------------------------------------------------------------------------
+Python virtual environments allow you to install Python packages in an isolated location from the rest of your system instead of installing them system-wide. 
+https://python.land/virtual-environments/virtualenv
+
+A virtual environment is a tool that helps to keep dependencies required by different projects separate by creating isolated python virtual environments for them. This is one of the most important tools that most of the Python developers use.
+
+Why do we need a virtual environment?
+
+Imagine a scenario where you are working on two web based python projects and one of them uses a Django 1.9 and the other uses Django 1.10 and so on. In such situations virtual environment can be really useful to maintain dependencies of both the projects.
+
+
+python -m virtualenv venv /path/to/new/virtual/environment
+
+https://python.land/virtual-environments/virtualenv
+
+Los pasos en el código son:
+
+# 1 Crea el ambiente virtual
+python -m virtualenv venv
+
+# 2 Se activa así:
+source venv/scripts/activate
+
+
+23/06/2023
+Las versiones de los paquetes de Platzi, no me funcionaron. Pero cambie la versión por la ultima y me funcionó correctamente en BASH.
+
+Platzi:
+pandas==1.3.3
+scikit-learn==1.0
+
+Solución:
+pandas==2.0.2
+scikit-learn==1.2
+
+
+------------------------------------------------------------------------------------------------------------------
+				PASO A PASO DE ENTRENAMIENTO MODELO
+------------------------------------------------------------------------------------------------------------------
+1- Limpieza de datos
+2- Seleccion de los modelos
+3- Definimos el Pipeline
+	3.1 definimos imputación de datos	
+	3.2 establecemos modelos
+	
+conjunto de prueba y calidación
+
+4- hacemos tunnig parameter
+	4.1 usando grid_search
+	4.2 seleccionamos el mejor resultado
+
+ajustamos el modelos con los mejores parametros
+
+realizamos validación cruzada, para saber en promedio que tan bien predice  nuetro modelos
+
+Encontramos el resultado sobre el conjunto de prueba
+exportamos el modelo.
+
+2023-06-27
+De momento me detengo en realizar los push con dvc para almacenar en Google Storage.
+
+model_dataset_tracker_new
+
+He tenigo algunos problema para almacenar los archivos en GS
+
+
+------------------------------------------------------------------------------------------------------------------
+						DVC
+------------------------------------------------------------------------------------------------------------------
+2023-06-29
+Pasos que use en bash:
+
+# Use esta documentación:
+https://dvc.org/doc/user-guide/data-management/remote-storage/google-cloud-storage
+
+ 
+# Primero activamos el ambiente virtual:
+source venv/Scripts/activate
+
+# Luego descargamos DVC:
+ pip install dvc
+
+# Iniciamos el DVC 
+dvc init -f
+
+# Creamos el enlace remoto
+dvc remote add model-track gs://model_dataset_tracker_new/model
+
+# Validamos que se halla creado correctamente
+dvc remote list
+
+# Es un metodo de validación de credenciales (pero no me funcionó):
+export GOOGLE_APPLICATION_CREDENTIALS='~/Documents/ea/Platzi/ML/CursoDeIntroduccionAlDespliegueDeModelosDeMachineLearning/Intro-deployment-ML/mlopsfundamentals-0cd69b72cb24.json'
+
+# Reordeno las credenciales pues lo anterior no me funcionó
+dvc remote modify --local model-track credentialpath 'mlopsfundamentals-0cd69b72cb24.json'
+dvc remote modify --local dataset-track credentialpath 'mlopsfundamentals-0cd69b72cb24.json'
+
+# Valido que se halla hecho correctamente la dirección
+echo $GOOGLE_APPLICATION_CREDENTIALS
+
+# Añadimos el modelo para DVC
+dvc add model/model.pkl
+dvc add dataset/movies.csv
+dvc add dataset/finantials.csv
+dvc add dataset/opening_gross.csv
+
+# Montamos el archivo en la nube
+dvc push model/model.pkl -r model-track
+dvc push dataset/movies.csv -r dataset-track
+
+
+
+2023-06-30
+# Conexiones a las rutas en GCP:
+# Para .DVC/config:
+
+[core]
+    remote = model-track
+['remote "dataset-track"']
+    url = gs://model_dataset_tracker_new/dataset
+['remote "model-track"']
+    url = gs://model_dataset_tracker_new/model
+
+
+2023-07-06
+# Para poder correr algunos comandos de "run" realizo esto:
+pip3 install dvc==2.7.4
+
+
+
+2023-07-07
+
+------------------------------------------------------------------------------------------------------------------
+						Pipelines
+------------------------------------------------------------------------------------------------------------------
+
+If you find yourself repeating sequence of actions to get or update the results of your project, then you may already have a pipeline. For example, a data science workflow could involve:
+
+	Gathering data for training and validation
+	Extracting useful features from the training dataset
+	(Re)training an ML model
+	Evaluating the results against the validation set
+
+DVC helps you define these stages in a standard YAML format (.dvc and dvc.yaml files), making your pipeline more manageable and consistent to reproduce.
+
+
+What Is YAML?
+YAML is a digestible data serialization language often used to create configuration files with any programming language.
+
+Designed for human interaction, YAML is a strict superset of JSON, another data serialization language. But because it’s a strict superset, it can do everything that JSON can and more. One major difference is that newlines and indentation actually mean something in YAML, as opposed to JSON, which uses brackets and braces.
+
+The format lends itself to specifying configuration, which is how we use it at CircleCI.
+
+https://circleci.com/blog/what-is-yaml-a-beginner-s-guide2F
+
+En lugar de usar "run" como use esta estrutura  con "stage" (por tema de versiones):
+
+Use dvc stage add to create stages. These represent processing steps (usually scripts/code tracked with Git) and combine to form the pipeline. Stages allow connecting code to its corresponding data input and output. Let's transform a Python script into a stage:
+
+dvc stage add -n featurize \
+                -p featurize.max_features,featurize.ngrams \
+                -d src/featurization.py -d data/prepared \
+                -o data/features \
+                python src/featurization.py data/prepared data/features
+
+https://dvc.org/doc/start/data-management/data-pipelines
+
+
+2023-07-10
+La carpeta otros es utilizada para almacenar archivos miselanios.
+
+
+2023-07-12
+Presento los siguientes inconvenientes:
+	Los pipelines, me han sacado muchos errores, tanto el proyecto de platzi como los ejemplos descargados desde dvc.
+	La api no quiere cargar los módulos que creé.
+
+No quiero solucionar estos problemas, quiero aprender. He invertido mucho tiempo sin éxito y el problema es que esto puede que no sea de gran valor para mi crecimiento como profesional, por esto opto por ver otro curso que me presente menores impedimento y buen aprendizaje. 
+
+Por eso decido ver otro curso en paralelo, a este para cambiar de ambiente y seguir aprendiendo. El curso elegido será: "Introducción a machine learning"
+Dividiré los espacios en relación a la dinámica del nuevo curso. Propongo inicialmente 30-60 min "Introducción al despligue de modelos de machine learning"
+
+
+
+
+  prepare:
+    cmd: python src/prepare.py data/data.xml
+    deps:
+    - data/data.xml
+    - src/prepare.py
+    params:
+    - prepare.seed
+    - prepare.split
+    outs:
+    - data/prepared
+
+
+2023-07-14
+
+Estoy intentando correr los pipelines dvc.yaml.
+
+# Primero creo los "stage":
+
+dvc stage add -n prepare \
+-d src/prepare.py \
+-d dataset/movies.csv \
+-d dataset/finantials.csv \
+-d dataset/opening_gross.csv \
+-o dataset/data_wordwide_gross.csv \
+-o dataset/full_data.csv \
+python src/prepare.py dataset/movies.csv dataset/finantials.csv dataset/opening_gross.csv
+
+
+stages:
+  prepare:
+    cmd: python src/prepare.py dataset/movies.csv dataset/finantials.csv dataset/opening_gross.csv
+    deps:
+    - dataset/finantials.csv
+    - dataset/movies.csv
+    - dataset/opening_gross.csv
+    - src/prepare.py
+    outs:
+    - dataset/data_wordwide_gross.csv
+    - dataset/full_data.csv
+
+2023-07-14
+
+Soluciono proble de Pipelines, es causa de la ruta tan larga que contenía, por lo que no podía encontrar los "run" generados por DVC:
+"C:\Users\Oliver\Documents\ea\Platzi\ML\CursoDeIntroduccionAlDespliegueDeModelosDeMachineLearning\Intro-deployment-ML\.dvc\cache\runs\a6\a6a0aef5c1dad98ae7e3316e6f97fe96da6c0bf76fa9ddb202c2770a05dceba6\.YQZK3JcfCEBRkG4hukDfgc.tmp"
+Lo cambio por ruta menos larga y finciona:
+C:\Users\Oliver\Documents\Intro-deployment-ML...
+
+Continuo con la creación de la API
+
+fastapi==0.68.1
+uvicorn==0.15.0
+scikit-learn==1.2
+pandas==2.0.2
+gunicorn==20.1.0
+joblib==1.3.1
+
+2023-07-19
+------------------------------------------------------------------------------------------------------------------
+						What is Type Hints in Python
+------------------------------------------------------------------------------------------------------------------
+
+Type hints is a feature of Python that allows you to explicitly declare the data type of a variable when declaring it. They are only available in Python 3.5 and later.
+
+Type hints provide two benefits. First, they help people reading your code to know what types of data to expect. Second, they can be used by the Python interpreter to check your code for errors at runtime, saving you from some frustrating bugs.
+
+
+Me funcionó la API, al correr

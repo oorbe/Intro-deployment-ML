@@ -1,0 +1,29 @@
+# el nombre del workflow
+name: Testing API
+
+# lista de evento, que triguering el worckflow
+on: [push, pull_request]
+
+# las ejecuciones que se van a hacer:
+jobs:
+  # Nombres del job.
+  testing-api:
+  # sistema operativo donde va a correr.
+    runs-on: ubuntu-latest
+  # setearemos las variables de ambiente para podernos conecta a google, para google cloud storage, cloud registry y lo demas servicios de google que necesitemos  
+    env:
+  # aqui se ingresa le secret.
+      SERVICE_ACCOUNT_KEY: ${{ secretes.SERVICE_ACCOUNT_KEY }}
+  # los steps
+  steps:
+    - name: Checkout the repo
+      uses: actions/checkhout@v2
+    - name: Creating and activating virtualenv
+      run: |
+        pip3 install virtualenv
+        virtualenv env
+        sourve ven/Script/activate
+    - name: Installing dependencies
+      run: |
+        pip install dvc[gs]
+        pip install -r requirements_test.txt

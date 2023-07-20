@@ -321,13 +321,51 @@ test.py .                                                                [100%]
 # Ahora se va a empaquetar la api en una imagen de docker. Lo cree y comenté.
 # Luego se crea el archivo inicializer.sh, que contiene #!/bin/bash que significa que usaremos bash
 
+# gunicorn, sive para que los medios de api sean sincronicos y se puedan ejecutar de manera paralela
+# exposición de la IP 0.0.0.0.
+# 2 workers: -w 2
+# carpeta.archivo:instancia: api.main:app
+# Tipo de workers: -k uvicorn.workers.UvicornWorker
+gunicorn --preload --bind 0.0.0.0 api.main:app -w 2 -k uvicorn.workers.UvicornWorker
 
+# Descargupe Docker:
 
 10:46
-# Bash: utilizo el siguiente comando.
+# Bash: utilizo el siguiente comando, para crear una imagen.
+#  1 activa el docker: DOCKER_BUILDKIT=1
+# tag: -t model-api:v1
  DOCKER_BUILDKIT=1 docker build . -t model-api:v1
 
+# Tuve un problema, y lo logre solucionar modificar especificando los siguientes requirements.txt, ubicado dentro de api.
+fastapi==0.68.1
+uvicorn==0.15.0
+scikit-learn==1.2
+pandas==2.0.2
+gunicorn==21.0.1
+joblib==1.3.1
 
-pytest==6.2.5
+# Solo use la última desión de gunicorn
+
+
+# Bash: Luego se usa el siguiente comando 
+docker run -p 8000:8000 model-api:v1
+
+# portal, entrada:salida: -p 8000:8000 y el nombre que usamos al crear la imagen.
+
+# FIN DOCKER: con esto ya hemos creado la imgen que contiene nuestra API, que puede ser uasdo en contenedores en servicios como cloud run o cubernetes.
+
+# Git hub Actions y continous machine learning o CML:
+
+¿mlflow?
+
+# Git hub Actions: son worckflows de nuestro repositorios y que son open source.
+# CML: sirve para publicar métricas y repotes, y hacerle seguiemiento al comportamiento de nuestro modelo.
+
+# Usaremos lo siguientes servicios de Google cloud:
+	cloud run: servicio para despligue.
+	cloud storage: servico de almacenamiento.
+	artifact registry: registro de contenedores.
+
+
 
 

@@ -10,7 +10,7 @@ def main():
     key = os.environ.get('SERVICE_ACCOUNT_KEY')
     with open('path.json', 'w') as json_file:
         # aqui se decode
-        json_file.write(b64decode(key.decode()))
+        json_file.write(b64decode(key).decode())
         # en testing.yaml está esperando una salida por esto hacemos:
     print(os.path.realpath('path.json'))
 

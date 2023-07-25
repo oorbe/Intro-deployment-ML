@@ -137,12 +137,12 @@ dvc remote modify --local dataset-track credentialpath 'mlopsfundamentals-0cd69b
 echo $GOOGLE_APPLICATION_CREDENTIALS
 
 # Añadimos el modelo para DVC
-dvc add model/model.pkl
-dvc add dataset/movies.csv
-dvc add dataset/finantials.csv
-dvc add dataset/opening_gross.csv
+dvc add model/model.pkl;
+dvc add dataset/movies.csv;
+dvc add dataset/finantials.csv;
+dvc add dataset/opening_gross.csv;
 
-# Montamos el archivo en la nube
+# Montamos el archivo en la nube 
 dvc push model/model.pkl -r model-track
 dvc push dataset/movies.csv -r dataset-track
 
@@ -389,3 +389,4 @@ docker run -p 8000:8000 model-api:v1
 Desarrollo de workflow para Continuous Training utilizando CML
 
 
+2023-07-25 03:40:05

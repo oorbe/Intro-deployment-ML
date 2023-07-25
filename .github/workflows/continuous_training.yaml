@@ -1,59 +1,52 @@
-name: ContinuousTraining
+name: Continuous Training
 on:
   push:
     branches:
-      -workflow_continuous_training
-  # Para que github action corra el worflow con este crontab, es decir cada 6 horas
+      - workflow_continuos_training
   schedule:
-    -cron:'0 */6 * * *'
-  # Por si queremos correrlo manualmente
+    - cron: '0 */6 * * *'
   workflow_dispatch:
     inputs:
       reason:
-        description:Whytorunthis?
-        required:false
-        default:runningCT
-# These permissions are needed to interact with GitHub's OIDC Token endpoint.
-permissions:
-  id-token: write# need this for OIDC  
-  contents: write
-  pull-requests: write 
-  issues: read
-  packages: none
+        description: why to run this?
+        required: false
+        dafault: running CT
 jobs:
   continuous-training:
     runs-on: ubuntu-latest
     steps:
-      -name: Checkout repo
-       uses: actions/checkout@v2
-      -name: Trainmodel
-        run: |
-          pip install pipenv
-          pipenv install
-          pipenv run python
-          pip install -r src/requirements.txt
-          dvc pull model/model.pkl.dvc -r model-track
-          dvc unprotect model/model.pkl
-          dvc repro -f 
-          echo "Training Completed"
-          dvc add model/model.pkl
-          dvc push model/model.pkl -r model-track
-# Running dvc unprotect guarantees that the target files or directories (targets) in the workspace are physically “unlinked” from the cache and can be safely updated. 
-      -name: Commit.dvcfilechanges
-        run: |
-          git config --local user.email "oli@gmail.com"
-          git config --local user.name "github-actions[bot]"
-          git add model/model.pkl.dvc
-          git commit -m "Updating model serialization"
--uses:ad-m/github-push-action@master
-        with:
-            github_token: ${{secrets.GITHUB_TOKEN}}
-            branch: ${{github.ref}}
-      -uses: iterative/setup-cml@v1
-      -name: Pushmetrics
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Train model
         env:
-          REPO_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run:|
-          cat report.txt >> report.md 
-          cml-publish prediction_behavior.png --md >> report.md
+          SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+        run: |
+           pip3 install virtualenv
+           virtualenv venv
+           source venv/bin/activate
+           pip install -r src/requirements.txt
+           export GOOGLE_APPLICATION_CREDENTIALS=$(python utilities/setter.py)
+           dvc pull model/model.pkl -r model-track
+           dvc unprotect model/model.pkl
+           dvc repro -f
+           echo "Training completed"
+           dvc add model/model.pkl  -r model-track
+           dvc push model/model.pkl -r model-track
+      - name: commit .dvc file changes
+        run: |
+          git config --local user.email "oliverrodriguez777@hotmail.com"
+          git config --local user.name "github-actions[bot]"
+          git add model/model.pkl
+          git commit -m "Updating model serialization"
+      - uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: $ {{ github.ref }}
+      - uses: iterative/setup-cml@v1
+      - name: Push metrics
+        env: 
+          REPO_TOKEN: $ {{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat report.txt >> report.md
+          cml-publish prediction_begaviour.png --md. >> report.md
           cml-send-comment report.md

@@ -27,9 +27,10 @@ jobs:
            pip install -r src/requirements.txt
            export GOOGLE_APPLICATION_CREDENTIALS=$(python utilities/setter.py)
            echo "Training completed 0 "
-           dvc pull model/model.pkl.dvc -r model-track
+           dvc pull model/model.pkl -r model-track
            echo "Training completed 1"
            dvc unprotect model/model.pkl
+           echo "Training completed 2"
            dvc repro -f
            echo "Training completed"
            dvc add model/model.pkl  -r model-track

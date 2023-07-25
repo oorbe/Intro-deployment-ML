@@ -31,7 +31,7 @@ jobs:
            dvc repro -f
            echo "Training completed"
            dvc add model/model.pkl  -r model-track --to-remote
-           dvc push model/model.pkl.dvc -r model-track
+           dvc push model/model.pkl -r model-track
       - name: commit .dvc file changes
         run: |
           git config --local user.email "oliverrodriguez777@hotmail.com"

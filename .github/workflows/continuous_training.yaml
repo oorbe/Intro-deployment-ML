@@ -28,6 +28,7 @@ jobs:
            export GOOGLE_APPLICATION_CREDENTIALS=$(python utilities/setter.py)
            echo "Training completed 0 "
            dvc pull model/model.pkl -r model-track
+           dvc pull dataset/finantials.csv -r dataset-track
            echo "Training completed 1"
            dvc unprotect model/model.pkl
            echo "Training completed 2"

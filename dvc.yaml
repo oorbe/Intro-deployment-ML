@@ -17,4 +17,4 @@ stages:
     outs:
     - model/model.pkl
     - prediction_behaviour.png
-    - repot.txt
+    - report.txt

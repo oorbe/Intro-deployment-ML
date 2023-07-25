@@ -369,4 +369,23 @@ docker run -p 8000:8000 model-api:v1
 
 
 
+2023-07-21 05:44:22
+# workflow para testing
+#  worckflow en git: los siguiente problemas:
+	Mucho typos en testing.yaml.
+	El modelo que subí a GCP ya no es el mismo, tuve que añadirlo de nuevo con dvc add y dvc push.
+# pero se solicionan
+
+
+# Faltan los worckflows de continous training, continos integration y continuos deplyment.
+
+# workflow Continuous Training:
+
+# workflow continos integration:
+
+2023-07-24 04:47:42
+
+2023-07-24 19:28:02
+Desarrollo de workflow para Continuous Training utilizando CML
+
 

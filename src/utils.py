@@ -9,7 +9,7 @@ def update_model(model: Pipeline) -> None:
   dump(model, 'model/model.pkl')
   
 def save_simle_metrics_report(train_score: float, test_score: float, validation_score: float, model: Pipeline) -> None:
-  with open('repot.txt', 'w') as report_file:
+  with open('report.txt', 'w') as report_file:
     
     report_file.write('# Model Pipeline Description')
     

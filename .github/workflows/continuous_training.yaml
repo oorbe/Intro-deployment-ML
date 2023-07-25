@@ -24,16 +24,10 @@ jobs:
   continuous-training:
     runs-on: ubuntu-latest
     steps:
-      -name :Checkoutrepo
-        uses: actions/checkout@v2
-      -name: SetAWScredentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-session-name: aws_testing_session
-          role-to-assume: ${{secrets.AWS_IAM_ROLE}}
-          aws-region: ${{secrets.AWS_REGION}}
-      -name:Trainmodel
-        run:|
+      -name: Checkout repo
+       uses: actions/checkout@v3
+      -name: Trainmodel
+        run: |
           pip install pipenv
           pipenv install
           pipenv run python

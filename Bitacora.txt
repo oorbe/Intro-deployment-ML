@@ -145,6 +145,8 @@ dvc add dataset/opening_gross.csv;
 # Montamos el archivo en la nube 
 dvc push model/model.pkl -r model-track
 dvc push dataset/movies.csv -r dataset-track
+dvc push dataset/finantials.csv -r dataset-track
+dvc push dataset/opening_gross.csv -r dataset-track
 
 
 

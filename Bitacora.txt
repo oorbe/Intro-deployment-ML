@@ -143,10 +143,10 @@ dvc add dataset/finantials.csv;
 dvc add dataset/opening_gross.csv;
 
 # Montamos el archivo en la nube 
-dvc push model/model.pkl -r model-track
-dvc push dataset/movies.csv -r dataset-track
-dvc push dataset/finantials.csv -r dataset-track
-dvc push dataset/opening_gross.csv -r dataset-track
+dvc push model/model.pkl -r model-track;
+dvc push dataset/movies.csv -r dataset-track;
+dvc push dataset/finantials.csv -r dataset-track;
+dvc push dataset/opening_gross.csv -r dataset-track;
 
 
 
@@ -392,3 +392,12 @@ Desarrollo de workflow para Continuous Training utilizando CML
 
 
 2023-07-25 03:40:05
+
+problemas git:
+
+Oliver@LAPTOP-I2UGFLL2 MINGW64 ~/Documents/Intro-deployment-ML (workflow_continuos_training)
+$ dvc add model/model.pkl -f;
+ERROR: cannot update 'model.pkl': overlaps with an output of stage: 'training' in 'dvc.yaml'.
+
+google:
+When you make changes to your DVC pipeline, you can use the dvc commit command to register the changes with DVC. This command will create a new Git commit with the updated DVC files and cache. You can also use dvc update command to update your pipeline. However, if you are trying to update a file that is already being used by another stage in your DVC pipeline, you should consider updating the stage that is using the file to use a different file name or path. You can also consider using a different version control system for your data such as Git LFS or Git Annex which are designed for large files like models123.

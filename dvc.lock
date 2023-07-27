@@ -42,13 +42,13 @@ stages:
     outs:
     - path: model/model.pkl
       hash: md5
-      md5: 4de41b98aac941975c2743c7b2ad861a
-      size: 330867
+      md5: 125fe3e9e5e54e4c45a08809449b789f
+      size: 394931
     - path: prediction_behaviour.png
       hash: md5
-      md5: 0aabfd00a34780e06ba6fbcd89acda00
-      size: 64382
+      md5: 480f6261ba228fd6ed8522d1ba384790
+      size: 62668
     - path: report.txt
       hash: md5
-      md5: fb28043b485627e3a96deb37e5141d18
-      size: 232
+      md5: ecf04733e8a2aadf24abd0dc0ef9199b
+      size: 234

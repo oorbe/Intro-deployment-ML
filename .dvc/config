@@ -1,6 +1,5 @@
 [core]
     remote = model-track
-    autostage = true
 ['remote "dataset-track"']
     url = gs://model_dataset_tracker_new/dataset
 ['remote "model-track"']

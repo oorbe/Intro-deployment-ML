@@ -36,6 +36,7 @@ jobs:
            echo "Training completed 2"
            dvc repro -f -v
            echo "Training completed"
+           dvc commit
            dvc add model/model.pkl  -r model-track --to-remote -f
            dvc push model/model.pkl.dvc -r model-track
       - name: commit .dvc file changes
